@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="bootstrap.min.css" th:href="@{/css/notes.css}">
+    <link
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+    <title>Sticky Notes</title>
+</head>
+
+<body>
+
+<!---->
+<div class="main-modal">
+    <div id="addNoteForm" class="modal">
+        <div class="main-dialog">
+            <div class="dialog">
+                <div class="dialog2">
+                    <div class="dialog-header">
+                        <div class="dialog-title">Start new Note</div>
+                    </div>
+                    <form th:object="${newNote}" th:action="@{createNote}" method="post" action="#" class="dialog-form"
+                          id="dialog-form">
+                        <div class="form-container">
+                            <div class="form-note-title">
+                                <div class="form-title1">
+                                    <div class="form-title2" id="create-title-id">
+                                        <label><span>Title Note</span></label>
+                                        <div class="form-title-input">
+                                            <input
+                                                    class="input-field-title"
+                                                    type="text"
+                                                    aria-labelledby="create-title-id"
+                                                    th:field="*{title}"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-body1">
+                                <div class="form-body2">
+                                    <div class="form-body3">
+                                        <textarea class="form-detail-input"
+                                                  placeholder="Let's take notes !"
+                                                  th:field="*{note}"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-action">
+                                <button class="cancel" id="cancel-new-note" type="button">
+                                    <span class="button-wrapper">Cancel</span>
+                                </button>
+                                <button class="add" id="add-new-note">
+                                    <span class="button-wrapper">Create</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!---->
+<div class="div-note1">
+    <div class="div-note2">
+        <div class="div-note3 card">
+            <div class="div-head1">
+                <div class="div-head2">
+                    <div class="div-head2-content">
+                        <div class="crumb">
+                            <div class="crumb-first">
+                                <a href="/notes">
+                                    <span class="material-icons"> home </span>
+                                </a>
+                            </div>
+                            <div class="crumb-second">
+                                <span class="material-icons"> keyboard_arrow_right </span>
+                            </div>
+                            <div class="crumb-text1">
+                                <a class="crumb-text2" href="" th:utext="${noteTitle}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="div-head3">
+                    <div class="div-head3-content">
+                        <div class="crumb">
+                            <div class="crumb-first" id="sort">
+                                <span class="material-icons"> sort </span>
+                                <div class="overlay-form" id="overlay">
+                                    <div class="sort-form" id="overlaySort">
+                                        <div class="sort-content">
+                                            <div class="ct-sort">
+                                                <div class="ct-sort1">
+                                                    <a th:href="@{/notes/search(searchType=month)}">In Month</a>
+                                                </div>
+                                            </div>
+                                            <div class="ct-sort">
+                                                <div class="ct-sort1">
+                                                    <a th:href="@{/notes/search(searchType=day)}">In Day</a>
+                                                </div>
+                                            </div>
+                                            <div class="ct-sort">
+                                                <div class="ct-sort1">
+                                                    <a th:href="@{/notes/search(searchType=hour)}">In Hours</a>
+                                                </div>
+                                            </div>
+                                            <div class="ct-sort">
+                                                <div class="ct-sort1">
+                                                    <a th:href="@{/notes/search(searchType=primary)}">Important</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="crumb-second logout">
+                                <form th:action="@{/doLogout}" method="post">
+                                    <button style="background-color:#eff2f5"><span class="material-icons"> logout </span></button>
+                                </form>
+                                <!--                                <a href="#logout">-->
+                                <!--                                    <span class="material-icons"> logout </span>-->
+                                <!--                                </a>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="div-body">
+                <div class="body-container">
+                    <div class="panels-note">
+                        <div class="panel-note">
+                            <div class="panel-note2">
+                                <div class="panel-note3">
+                                    <div class="add-data-btn">
+                                        <button class="add-btn" id="btnAdd">
+                          <span class="add-btn-wrapper">
+                            <div class="add-btn-label">
+                              <span class="material-icons"> add </span>
+                              <p>New Note</p>
+                            </div>
+                          </span>
+                                        </button>
+                                    </div>
+                                    <!-- panel-note3 -->
+                                    <div class="list-note scroll">
+                                        <div class="virtual-scroll">
+                                            <div
+                                                    class="total-padding"
+                                                    style="height: 400px"
+                                            ></div>
+                                            <div class="scrollable-content" id="scroll-content">
+                                                <!-- Edit here -->
+                                                <tr th:each="note : ${notesSearch}!=null ? ${notesSearch} : ${notes}"
+                                                    id="content">
+                                                    <a th:href="@{/notes/details(noteId=${note.id})}">
+                                                        <div class="data-list-item">
+                                                            <div class="list-item-content">
+                                                                <div class="item-target" role="button">
+                                                                    <p
+                                                                            th:text="${note.title}"></p>
+                                                                    <!-- Change -->
+                                                                    <span class="material-icons chevron">chevron_right</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+
+                                                </tr>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form id="search-form" th:object="${search}" th:action="@{search}" method="post" action="#">
+                        <div class="search-note">
+                            <div class="search-input">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                                     fill="#000000">
+                                    <path d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                                </svg>
+                                <input
+                                        placeholder="Search title note"
+                                        class="input-note"
+                                        id="titleNote"
+                                        type="text"
+                                        th:field="*{titleNote}"
+                                />
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <!-- Note Detail -->
+                <div class="panels-detail">
+                    <div class="panel-detail1">
+                        <div class="detail-head">
+                            <div class="head-img">
+                                <div style="width: 100%; cursor: inherit">
+                                    <div style="width: 100%; height: 100%">
+                                        <img
+                                                class="img-head-detail"
+                                                src="https://raw.githubusercontent.com/TommyHoang2911/FinalTestJavaTemplate/main/static/imgHeadDetail.jpg"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="head-title">
+                                <p th:utext="${noteTitle}"></p>
+                            </div>
+                        </div>
+                        <div class="detail-body">
+                            <div class="text-note1">
+                                <div class="text-note2">
+                                    <div class="text-note3">
+                                        <div
+                                                class="text-note4"
+                                                contenteditable="true"
+                                                data-placeholder="Let's take notes !"
+                                                spellcheck="true"
+                                                id="editNote"
+                                                th:utext="${noteDetail}"
+                                        ></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+
+<script type="text/javascript" src="/js/updateNote.js"></script>
+
+<script>
+    var parentContent = document.getElementById("scroll-content");
+    var noteItem = parentContent.getElementsByClassName("data-list-item");
+    var chevron = parentContent.getElementsByClassName("chevron");
+    var selected = localStorage.getItem("selected");
+
+    if (selected != null) {
+        noteItem[selected].style.backgroundColor = "rgba(0, 0, 0, 0.08)";
+        chevron[selected].style.visibility = "visible"
+
+        localStorage.removeItem("selected");
+    }
+    for (let index = 0; index < noteItem.length; index++) {
+        const element = noteItem[index];
+
+        element.addEventListener("click", function (event) {
+            localStorage.setItem("selected", index);
+        });
+    }
+</script>
+<script>
+    const ele = document.getElementById("editNote");
+
+    // Get the placeholder attribute
+    const placeholder = ele.getAttribute("data-placeholder");
+
+    // Set the placeholder as initial content if it's empty
+    ele.innerHTML === "" && (ele.innerHTML = placeholder);
+
+    ele.addEventListener("focus", function (e) {
+        const value = e.target.innerHTML;
+        value === placeholder && (e.target.innerHTML = "");
+    });
+
+    ele.addEventListener("blur", function (e) {
+        const value = e.target.innerHTML;
+        value === "" && (e.target.innerHTML = placeholder);
+    });
+</script>
+
+<script>
+
+    var modal = document.getElementById("addNoteForm");
+
+    var btn = document.getElementById("btnAdd");
+
+    var btnCancel = document.getElementsByClassName("cancel")[0];
+
+    btn.onclick = function () {
+        modal.style.display = "block";
+    };
+
+    btnCancel.onclick = function () {
+        modal.style.display = "none";
+    };
+</script>
+<script>
+    var btnSort = document.getElementById("sort");
+    var overlayForm = document.getElementById("overlay");
+    var overlaySort = document.getElementById("overlaySort");
+    btnSort.onclick = function () {
+        overlayForm.style.display = "block";
+        overlaySort.style.display = "block";
+    };
+
+</script>
+
+</body>
+</html>

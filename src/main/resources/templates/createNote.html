@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head>
+    <meta charset="UTF-8">
+    <link type="text/css" rel="stylesheet" href="bootstrap.min.css" th:href="@{/css/signup.css}">
+    <title>Create Notes</title>
+</head>
+<body>
+
+<form th:object="${newNote}" th:action="@{/notes/createNote}" action="#" method="post" class="form" id="form">
+    <input type="text" th:field="*{title}" id="titleNote" class="form-field animation a1"
+           placeholder="Title">
+
+    <input type="text" th:field="*{note}" id="noteDetail" class="form-field animation a1"
+           placeholder="Let's note">
+
+
+    <button id="btnCreate">Create</button>
+</form>
+
+
+</body>
+</html>

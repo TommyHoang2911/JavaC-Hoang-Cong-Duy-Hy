@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head>
+    <meta charset="UTF-8">
+    <link type="text/css" rel="stylesheet" href="bootstrap.min.css" th:href="@{/css/login.css}">
+    <title>Sign in</title>
+</head>
+<body>
+<div class="container">
+    <div class="left">
+        <div class="header">
+            <h2 class="animation a1">Welcome Back</h2>
+            <h4 class="animation a2">Log in to your account using email and password</h4>
+        </div>
+        <div class="form_signin">
+            <form th:action="@{/login}" method="post" class="form">
+                <input type="email" name="email" class="form-field animation a3" placeholder="Email Address" required>
+                <input type="password" name="password" class="form-field animation a4" placeholder="Password" required>
+<!--                <span class="error a5" th:utext="${signInError}"></span>-->
+                <p class="animation a5"><a href="#">Forgot Password</a></p>
+                <button class="animation a6">SIGN IN</button>
+            </form>
+            <button onclick="window.location.href='/signup'" class="animation a7 btnSignup">SIGN UP</button>
+        </div>
+    </div>
+    <div class="right"></div>
+</div>
+
+</body>
+</html>

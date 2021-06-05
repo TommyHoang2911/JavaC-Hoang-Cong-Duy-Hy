@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head>
+    <meta charset="UTF-8">
+    <link type="text/css" rel="stylesheet" href="bootstrap.min.css" th:href="@{/css/signup.css}">
+    <title>Sign up</title>
+</head>
+<body>
+<script>
+
+
+    function checkInput() {
+        console.log("Clicked");
+        document.getElementById("loading").style.display="block";
+        document.getElementById("btnSignup").style.display="none";
+    }
+</script>
+
+<div class="container">
+    <div class="left">
+        <div class="header">
+            <button class="btnBack" onclick="window.location.href='/login'">Go to Back</button>
+            <h2 id="textSignup">Sign Up</h2>
+        </div>
+        <div id="signup_div">
+            <form th:object="${user}" th:action="@{save}" action="#"  method="post" class="form" id="form">
+                <input type="text" th:field="*{firstName}" id="signupFirstName" class="form-field animation a1" placeholder="First Name">
+                <span class="error a1" th:utext="${firstNameInvalid}"></span>
+
+                <input type="text" th:field="*{lastName}" id="signupLastName" class="form-field animation a1" placeholder="Last Name">
+                <span class="error a1" th:utext="${lastNameInvalid}"></span>
+
+                <input type="text" th:field="*{email}" id="signupEmail" class="form-field animation a1" placeholder="Email Address">
+                <span class="error a1" th:utext="${emailInvalid}"></span>
+
+                <input type="password" th:field="*{password}" id="signupPass" class="form-field animation a2" placeholder="Password">
+                <span class="error a2" th:utext="${passwordInvalid}"></span>
+
+                <input type="password" th:field="*{rePassword}" id="retypePass" class="form-field animation a3" placeholder="Comfirm Password">
+                <span class="error a3" th:utext="${rePasswordInvalid}"></span>
+
+                <button id="btnSignup"  class="animation a4" onclick="checkInput()">SIGN UP</button>
+            </form>
+            <div id="loading" class="spinner"></div>
+        </div>
+    </div>
+    <div class="right"></div>
+</div>
+
+</body>
+</html>
